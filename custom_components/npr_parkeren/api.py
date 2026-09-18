@@ -179,9 +179,7 @@ class NprApi:
             or not parsed.path.endswith(".xml")
         ):
             raise NprApiError("unexpected publication url")
-        status, text = await self._request(
-            url, None, "application/xml, text/xml"
-        )
+        status, text = await self._request(url, None, "application/xml, text/xml")
         if status != 200:
             raise NprApiError(f"HTTP {status} from publication")
         return text

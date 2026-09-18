@@ -180,9 +180,7 @@ class NprLatestDecisionSensor(NprBaseSensor):
         latest = self._data.get("latest_decision")
         if not latest:
             return None
-        title = str(
-            latest.get("decision_title") or latest.get("title") or ""
-        ).strip()
+        title = str(latest.get("decision_title") or latest.get("title") or "").strip()
         return title[:255] or None
 
     @property
@@ -201,7 +199,9 @@ class NprLatestDecisionSensor(NprBaseSensor):
             attributes["decision_title"] = latest["decision_title"]
         if latest.get("excerpt"):
             attributes["excerpt"] = latest["excerpt"]
-        return {key: value for key, value in attributes.items() if value not in (None, "")}
+        return {
+            key: value for key, value in attributes.items() if value not in (None, "")
+        }
 
 
 class NprDecisionCountSensor(NprBaseSensor):

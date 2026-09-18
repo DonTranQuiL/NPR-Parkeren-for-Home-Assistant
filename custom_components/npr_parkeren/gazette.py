@@ -180,9 +180,9 @@ def filter_by_municipality(
     kept: list[dict[str, Any]] = []
     for item in items:
         blob = (
-        f"{item.get('title') or ''} {item.get('decision_title') or ''} "
-        f"{item.get('description') or ''} {item.get('excerpt') or ''}"
-    ).casefold()
+            f"{item.get('title') or ''} {item.get('decision_title') or ''} "
+            f"{item.get('description') or ''} {item.get('excerpt') or ''}"
+        ).casefold()
         if needle in blob:
             kept.append(item)
     return kept
