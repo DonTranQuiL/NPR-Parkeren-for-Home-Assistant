@@ -16,7 +16,10 @@ from typing import Any
 from urllib.parse import urlencode
 from xml.etree import ElementTree
 
-from .const import DEFAULT_KEYWORD, GAZETTE_RSS
+from .const import GAZETTE_RSS, GAZETTE_TYPE
+
+# The stored default keyword names the rubriek. It is not a second index term.
+_RUBRIC_KEYWORDS = frozenset({"verkeersbesluit", GAZETTE_TYPE.casefold()})
 
 _PARKING_BAN = (
     "parkeerverbod",
@@ -38,21 +41,77 @@ _ROAD_CLOSURE = (
 
 
 def build_gazette_query(municipality: str, keyword: str | None = None) -> str:
-    """Build the CQL query, substituting municipality and keyword."""
+    """Build the CQL query for the traffic-decision rubriek.
+
+    The place is one text index term. An extra keyword is added only when
+    the user typed something other than the rubriek name. The stored default
+    ``verkeersbesluit`` selects the whole rubriek and is not ANDed in.
+    """
     place = _clean_term(municipality)
-    term = _clean_term(keyword or DEFAULT_KEYWORD) or DEFAULT_KEYWORD
-    return (
-        '(c.product-area=="officielepublicaties")and'
-        '(w.publicatienaam=="Gemeenteblad")and'
-        f'(cql.textAndIndexes=="{place}")and'
-        f'(cql.textAndIndexes=="{term}")'
-    )
+    parts = [
+        '(c.product-area=="officielepublicaties")',
+        f'(dt.type=="{GAZETTE_TYPE}")',
+        '(w.publicatienaam=="Gemeenteblad")',
+        f'(cql.textAndIndexes=="{place}")',
+    ]
+    term = _clean_term(keyword)
+    if term and term.casefold() not in _RUBRIC_KEYWORDS:
+        parts.append(f'(cql.textAndIndexes=="{term}")')
+    return "and".join(parts)
 
 
 def build_gazette_url(municipality: str, keyword: str | None = None) -> str:
     """RSS URL for one municipality and keyword."""
     query = build_gazette_query(municipality, keyword)
     return f"{GAZETTE_RSS}?{urlencode({'q': query})}"
+
+
+def publication_xml_url(link: str | None) -> str | None:
+    """The decision text lives at the same id, with .html swapped for .xml."""
+    value = (link or "").strip()
+    if not value.endswith(".html"):
+        return None
+    return value[:-5] + ".xml"
+
+
+def extract_publication(xml_text: str | None) -> dict[str, Any]:
+    """Pull the decision title and body from an official-publication XML document.
+
+    Publication date stays the RSS pubDate. A start or end date is not
+    invented from the regulation text.
+    """
+    raw = (xml_text or "").lstrip("\ufeff").strip()
+    if not raw:
+        return {}
+    try:
+        root = ElementTree.fromstring(raw)
+    except ElementTree.ParseError:
+        return {}
+
+    def local(tag: str) -> str:
+        return tag.split("}")[-1]
+
+    titles = [
+        (element.text or "").strip()
+        for element in root.iter()
+        if local(element.tag) == "titel" and (element.text or "").strip()
+    ]
+    decision_title = next(
+        (title for title in titles if title.casefold() != "gemeenteblad"),
+        "",
+    )
+    paragraphs = [
+        re.sub(r"\s+", " ", (element.text or "").strip())
+        for element in root.iter()
+        if local(element.tag) == "al" and (element.text or "").strip()
+    ]
+    excerpt = clip(" ".join(paragraphs), 800)
+    result: dict[str, Any] = {}
+    if decision_title:
+        result["decision_title"] = decision_title
+    if excerpt:
+        result["excerpt"] = excerpt
+    return result
 
 
 def _clean_term(value: str | None) -> str:
@@ -120,7 +179,10 @@ def filter_by_municipality(
         return []
     kept: list[dict[str, Any]] = []
     for item in items:
-        blob = f"{item.get('title') or ''} {item.get('description') or ''}".casefold()
+        blob = (
+        f"{item.get('title') or ''} {item.get('decision_title') or ''} "
+        f"{item.get('description') or ''} {item.get('excerpt') or ''}"
+    ).casefold()
         if needle in blob:
             kept.append(item)
     return kept
@@ -152,7 +214,7 @@ def public_decision(
 ) -> dict[str, Any]:
     """Whitelist one decision. No start or end date is added."""
     category = item.get("category")
-    return {
+    payload: dict[str, Any] = {
         "title": item.get("title") or "",
         "link": item.get("link") or "",
         "description": clip(str(item.get("description") or ""), description_limit),
@@ -161,6 +223,13 @@ def public_decision(
         "classification": item.get("classification")
         or classify_decision(item.get("title"), item.get("description")),
     }
+    decision_title = str(item.get("decision_title") or "").strip()
+    excerpt = clip(str(item.get("excerpt") or ""), description_limit)
+    if decision_title:
+        payload["decision_title"] = decision_title
+    if excerpt:
+        payload["excerpt"] = excerpt
+    return payload
 
 
 def watched_streets(value: str | None) -> list[str]:

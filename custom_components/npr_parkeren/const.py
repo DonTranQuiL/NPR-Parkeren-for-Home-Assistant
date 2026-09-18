@@ -5,7 +5,7 @@ from __future__ import annotations
 DOMAIN = "npr_parkeren"
 NAME = "NPR Parkeren"
 MANUFACTURER = "DonTranQuiL"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 ATTRIBUTION = (
     "Data © RDW Nationaal Parkeer Register (open data) and Officiële bekendmakingen"
 )
@@ -20,6 +20,8 @@ PLATFORMS = (
 
 SODA_BASE = "https://opendata.rdw.nl/resource"
 GAZETTE_RSS = "https://zoek.officielebekendmakingen.nl/rss"
+GAZETTE_TYPE = "verkeersbesluit of -mededeling"
+GAZETTE_DETAIL_MAX = 8
 
 DATASET_MANAGERS = "2uc2-nnv3"
 DATASET_AREAS = "adw6-9hsg"

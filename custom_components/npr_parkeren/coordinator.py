@@ -39,13 +39,18 @@ from .const import (
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
     EVENT_DECISION,
+    GAZETTE_DETAIL_MAX,
     HISTORY_MAX,
     MIN_SCAN_INTERVAL,
 )
 from .gazette import (
+    classify_decision,
+    extract_publication,
     filter_by_municipality,
     matching_streets,
     parse_rss,
+    publication_xml_url,
+    sort_decisions,
     watched_streets,
 )
 from .snapshot import build_snapshot
@@ -130,11 +135,33 @@ class NprParkerenCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         keyword = str(_option(self.entry, CONF_KEYWORD, DEFAULT_KEYWORD))
         try:
             xml_text = await self.api.fetch_gazette_xml(self.municipality, keyword)
-            items = filter_by_municipality(parse_rss(xml_text), self.municipality)
+            items = sort_decisions(
+                filter_by_municipality(parse_rss(xml_text), self.municipality)
+            )
         except (NprApiError, Exception) as err:
             _LOGGER.warning("Gazette RSS failed, keeping last decisions: %s", err)
             return list(self._last_decisions), str(err)
-        return items, None
+        enriched: list[dict[str, Any]] = []
+        for item in items[:GAZETTE_DETAIL_MAX]:
+            url = publication_xml_url(str(item.get("link") or ""))
+            if not url:
+                enriched.append(item)
+                continue
+            try:
+                detail = extract_publication(await self.api.fetch_publication_xml(url))
+            except NprApiError as err:
+                _LOGGER.debug("Publication XML skipped for %s: %s", url, err)
+                enriched.append(item)
+                continue
+            merged = dict(item)
+            merged.update({key: value for key, value in detail.items() if value})
+            merged["classification"] = classify_decision(
+                str(detail.get("decision_title") or item.get("title") or ""),
+                f"{item.get('description') or ''} {detail.get('excerpt') or ''}",
+            )
+            enriched.append(merged)
+        enriched.extend(items[GAZETTE_DETAIL_MAX:])
+        return enriched, None
 
     def _local_now(self) -> datetime:
         current = dt_util.now()

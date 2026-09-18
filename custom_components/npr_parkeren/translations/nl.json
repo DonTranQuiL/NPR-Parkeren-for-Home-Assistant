@@ -51,7 +51,7 @@
           "scan_interval": "Minimaal 300 seconden. NPR-tabellen worden elke 12 uur ververst.",
           "radius_km": "Zoekstraal rond de ingestelde coördinaten.",
           "max_map_markers": "Maximum aantal zone-markeringen. Markeringen buiten het maximum worden meteen verwijderd.",
-          "keyword": "Tweede zoekterm voor het gemeenteblad. Standaard is verkeersbesluit.",
+          "keyword": "Optionele extra zoekterm. Laat verkeersbesluit staan voor de hele rubriek verkeersbesluit. Zet parkeerverbod om te vernauwen.",
           "enable_markers": "Maak device-tracker-pinnen voor zones binnen de straal."
         }
       }

@@ -51,7 +51,7 @@
           "scan_interval": "Minimum 300 seconds. NPR tables themselves refresh every 12 hours.",
           "radius_km": "Search radius around the configured coordinates.",
           "max_map_markers": "Cap on zone markers. Markers outside the cap are removed immediately.",
-          "keyword": "Second search term for the official gazette. Default is verkeersbesluit.",
+          "keyword": "Optional extra gazette term. Leave verkeersbesluit to use the whole traffic-decision rubriek. Set parkeerverbod to narrow it.",
           "enable_markers": "Create device tracker pins for zones inside the radius."
         }
       }

@@ -23,12 +23,14 @@
     "resetdurationtimeframe": "0"
   },
   "rss_item": {
-    "source": "https://zoek.officielebekendmakingen.nl/rss q=(c.product-area==\"officielepublicaties\")and(dt.creator==\"Kerkrade\")",
-    "note": "The specified Gemeenteblad + cql.textAndIndexes query returned an empty channel on this date. This item is from a live limited feed that did return rows. The integration still builds the specified query.",
-    "title": "gmb-2026-439554 : Kerkrade",
-    "link": "https://zoek.officielebekendmakingen.nl/gmb-2026-439554.html",
-    "description": "BOPA vergunning voor Nieuwstraat 92, 6462GN Kerkrade",
-    "pubDate": "Fri, 18 Sep 2026 00:00:00 +0200",
-    "category": "Gemeenteblad"
+    "source": "Maastricht, 2026-09-18. Query: product-area officielepublicaties, dt.type verkeersbesluit of -mededeling, publicatienaam Gemeenteblad, cql.textAndIndexes Maastricht. Neighbours can appear first; the title filter keeps the municipality.",
+    "title": "gmb-2026-405510 : Maastricht",
+    "link": "https://zoek.officielebekendmakingen.nl/gmb-2026-405510.html",
+    "xml": "https://zoek.officielebekendmakingen.nl/gmb-2026-405510.xml",
+    "description": "Verkeersmaatregel Academieplein",
+    "decision_title": "Verkeersmaatregel Academieplein",
+    "pubDate": "from the RSS item for this id",
+    "category": "Gemeenteblad",
+    "note": "The XML body has the decision text. pubDate is the publication date. Do not invent a start or end date."
   }
 }

@@ -243,9 +243,9 @@ class NprParkerenCard extends HTMLElement {
         const klass = item.classification || "traffic_decision";
         return `<a class="decision" href="${this._esc(item.link || "#")}" target="_blank" rel="noopener">
           <span class="pill ${this._esc(klass)}">${this._esc(klass)}</span>
-          <strong>${this._esc(item.title || "Decision")}</strong>
+          <strong>${this._esc(item.decision_title || item.title || "Decision")}</strong>
           <span class="muted">${this._esc(item.pub_date || "")}</span>
-          <p>${this._esc(item.description || "")}</p>
+          <p>${this._esc(item.excerpt || item.description || "")}</p>
         </a>`;
       })
       .join("");

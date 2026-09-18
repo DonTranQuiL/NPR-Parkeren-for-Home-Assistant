@@ -73,7 +73,7 @@ recorder:
 | `scan_interval` | 900 s | Minimum 300. Gazette is fetched every poll. |
 | `radius_km` | 2.0 | Centre is the latitude and longitude from setup. |
 | `max_map_markers` | 25 | Pins outside the cap are removed immediately. |
-| `keyword` | verkeersbesluit | Second term in the gazette query. |
+| `keyword` | verkeersbesluit | Extra term. The default searches the rubriek verkeersbesluit of -mededeling. Use parkeerverbod to narrow. |
 | `enable_markers` | true | Device-tracker pins, colored by usage. |
 
 NPR tables are filtered to the area manager of the entry and cached for 12 hours. A failed poll keeps the last good payload.
