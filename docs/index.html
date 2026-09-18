@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPR Parkeren | Home Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-[#0B1120] text-slate-200 font-sans selection:bg-sky-500/30 overflow-x-hidden">
+
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0B1120]/80 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="https://dontranquil.github.io/" class="flex items-center gap-2 text-white font-bold text-xl tracking-wide">
+                <i data-lucide="parking-circle" class="text-sky-400 w-6 h-6"></i>
+                NPR <span class="text-sky-400 font-light">Parkeren</span>
+            </a>
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#zones" class="hover:text-white transition-colors">Zones</a>
+                <a href="#installation" class="hover:text-white transition-colors">Install</a>
+                <a href="https://github.com/DonTranQuiL/NPR-Parkeren-for-Home-Assistant" target="_blank" class="flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-full transition-all">
+                    <i data-lucide="github" class="w-4 h-4"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-28 overflow-hidden">
+        <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full bg-sky-500/10 blur-3xl pointer-events-none"></div>
+        <div class="relative max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-300 text-xs font-medium mb-6">
+                <i data-lucide="map-pinned" class="w-3.5 h-3.5"></i>
+                Dutch municipal parking for Home Assistant
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
+                One municipality.<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">Live zones, tariffs &amp; decisions.</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-lg text-slate-400 mb-10">
+                NPR Parkeren reads the Nationaal Parkeer Register and the municipal gazette.
+                See paid, permit and blue zones, the rate and maximum stay in force now,
+                whether your coordinates are inside a zone, and recent traffic decisions.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#installation" class="px-6 py-3 rounded-full bg-sky-600 hover:bg-sky-500 text-white font-semibold transition-all">Install with HACS</a>
+                <a href="https://github.com/DonTranQuiL/NPR-Parkeren-for-Home-Assistant/releases" target="_blank" class="px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold transition-all">Latest release</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">What you get</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-6 rounded-2xl bg-slate-900/60 border border-white/5">
+                    <i data-lucide="building-2" class="w-8 h-8 text-sky-400 mb-4"></i>
+                    <h3 class="text-white font-semibold mb-2">One entry per municipality</h3>
+                    <p class="text-slate-400 text-sm">The area manager is looked up during setup. The same municipality cannot be added twice.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-slate-900/60 border border-white/5">
+                    <i data-lucide="coins" class="w-8 h-8 text-sky-400 mb-4"></i>
+                    <h3 class="text-white font-semibold mb-2">Tariff in force now</h3>
+                    <p class="text-slate-400 text-sm">Paid, permit and blue zones from the RDW national parking register, with the rate and maximum stay for the current weekday and time.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-slate-900/60 border border-white/5">
+                    <i data-lucide="crosshair" class="w-8 h-8 text-sky-400 mb-4"></i>
+                    <h3 class="text-white font-semibold mb-2">Can I park here?</h3>
+                    <p class="text-slate-400 text-sm">A sensor answers whether your configured coordinates sit inside a regulated street within the chosen radius.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-slate-900/60 border border-white/5">
+                    <i data-lucide="file-text" class="w-8 h-8 text-sky-400 mb-4"></i>
+                    <h3 class="text-white font-semibold mb-2">Traffic decisions</h3>
+                    <p class="text-slate-400 text-sm">Municipal gazette items in the verkeersbesluit rubriek, with publication text from the official XML and neighbour hits filtered out.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-slate-900/60 border border-white/5">
+                    <i data-lucide="map" class="w-8 h-8 text-sky-400 mb-4"></i>
+                    <h3 class="text-white font-semibold mb-2">Capped map pins</h3>
+                    <p class="text-slate-400 text-sm">Device-tracker pins coloured by usage. Full polygons stay in the coordinator cache; entities publish a centroid and at most twelve ring points.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-slate-900/60 border border-white/5">
+                    <i data-lucide="bell" class="w-8 h-8 text-sky-400 mb-4"></i>
+                    <h3 class="text-white font-semibold mb-2">Street watch</h3>
+                    <p class="text-slate-400 text-sm">List streets you care about. A new decision that names one of them fires an update you can automate on.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="zones" class="py-20 border-t border-white/5 bg-slate-950/40">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-white mb-4">Zero-bloat by design</h2>
+                <p class="text-slate-400 mb-6">NPR tables are filtered to the area manager of the entry and cached for 12 hours. A failed poll keeps the last good payload. Fat overview attributes should stay out of the recorder.</p>
+                <ul class="space-y-3 text-sm text-slate-300">
+                    <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-sky-400 shrink-0"></i> Radius and map-marker cap in options</li>
+                    <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-sky-400 shrink-0"></i> Pins outside the cap are removed immediately</li>
+                    <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-sky-400 shrink-0"></i> Coordinator-first, single poll cycle</li>
+                </ul>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-slate-900/80 p-6 font-mono text-xs text-slate-300 overflow-x-auto custom-scrollbar">
+<pre class="whitespace-pre">recorder:
+  exclude:
+    entities:
+      - sensor.npr_parkeren_maastricht_overview</pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="installation" class="py-20 border-t border-white/5">
+        <div class="max-w-3xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-white mb-8 text-center">Install</h2>
+            <ol class="space-y-4 text-slate-300">
+                <li class="flex gap-4"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-sky-600 text-white text-sm font-bold shrink-0">1</span><span>HACS → Integrations → ⋮ → <strong class="text-white">Custom repositories</strong></span></li>
+                <li class="flex gap-4"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-sky-600 text-white text-sm font-bold shrink-0">2</span><span>URL: <code class="text-sky-300">https://github.com/DonTranQuiL/NPR-Parkeren-for-Home-Assistant</code> · Category: Integration</span></li>
+                <li class="flex gap-4"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-sky-600 text-white text-sm font-bold shrink-0">3</span><span>Download <strong class="text-white">NPR Parkeren</strong>, then restart Home Assistant</span></li>
+                <li class="flex gap-4"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-sky-600 text-white text-sm font-bold shrink-0">4</span><span>Settings → Devices &amp; services → Add Integration → NPR Parkeren</span></li>
+                <li class="flex gap-4"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-sky-600 text-white text-sm font-bold shrink-0">5</span><span>Enter municipality, latitude, longitude and radius. The area manager is resolved during setup.</span></li>
+            </ol>
+            <div class="mt-10 rounded-2xl border border-white/10 bg-slate-900/80 p-6">
+                <h3 class="text-white font-semibold mb-3">Lovelace card</h3>
+                <p class="text-slate-400 text-sm mb-4">Copy <code class="text-sky-300">npr_parkeren-card.js</code> into <code class="text-sky-300">/config/www/</code>, add a resource <code class="text-sky-300">/local/npr_parkeren-card.js</code> (JavaScript Module), then:</p>
+<pre class="text-xs text-slate-300 font-mono overflow-x-auto">type: custom:npr_parkeren-card
+entity: sensor.npr_parkeren_maastricht_overview
+title: Parking near home</pre>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 py-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>MIT · Maintained by <a class="text-sky-400 hover:text-sky-300" href="https://github.com/DonTranQuiL">@DonTranQuiL</a></p>
+            <p>Data © RDW Nationaal Parkeer Register and Officiële Bekendmakingen</p>
+            <a href="https://dontranquil.github.io/" class="hover:text-white transition-colors">dontranquil.github.io</a>
+        </div>
+    </footer>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
