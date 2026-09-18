@@ -1,0 +1,104 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NPR Parkeren",
+        "description": "One entry per Dutch municipality. The area manager is looked up from RDW open data.",
+        "data": {
+          "municipality": "Municipality",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "radius_km": "Radius (km)"
+        },
+        "data_description": {
+          "municipality": "Name of the municipality, for example Kerkrade. The area manager id is resolved during setup.",
+          "latitude": "Latitude used for 'regulated here' and the search centre.",
+          "longitude": "Longitude used for 'regulated here' and the search centre.",
+          "radius_km": "Zones whose centroid is within this radius, or that contain the point, are shown."
+        }
+      },
+      "select_manager": {
+        "title": "Choose area manager",
+        "description": "More than one area manager matched. Choose the municipality to add.",
+        "data": {
+          "areamanagerid": "Area manager"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "The RDW open data portal could not be reached.",
+      "municipality_not_found": "No area manager was found for that name.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This municipality is already configured.",
+      "municipality_not_found": "No area manager was found for that name."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "NPR Parkeren options",
+        "description": "Polling, radius, map markers, and the gazette keyword.",
+        "data": {
+          "scan_interval": "Scan interval (seconds)",
+          "radius_km": "Radius (km)",
+          "max_map_markers": "Maximum map markers",
+          "keyword": "Gazette keyword",
+          "enable_markers": "Enable map markers"
+        },
+        "data_description": {
+          "scan_interval": "Minimum 300 seconds. NPR tables themselves refresh every 12 hours.",
+          "radius_km": "Search radius around the configured coordinates.",
+          "max_map_markers": "Cap on zone markers. Markers outside the cap are removed immediately.",
+          "keyword": "Second search term for the official gazette. Default is verkeersbesluit.",
+          "enable_markers": "Create device tracker pins for zones inside the radius."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "overview": {
+        "name": "Overview"
+      },
+      "zones_in_radius": {
+        "name": "Zones in radius"
+      },
+      "regulated_here": {
+        "name": "Regulated here"
+      },
+      "latest_decision": {
+        "name": "Latest decision"
+      },
+      "decision_count": {
+        "name": "Decision count"
+      },
+      "consecutive_errors": {
+        "name": "Consecutive errors"
+      },
+      "last_update_status": {
+        "name": "Last update status"
+      },
+      "last_update_time": {
+        "name": "Last update time"
+      }
+    },
+    "button": {
+      "refresh": {
+        "name": "Refresh"
+      }
+    },
+    "text": {
+      "watchlist": {
+        "name": "Street watchlist"
+      }
+    }
+  },
+  "services": {
+    "refresh": {
+      "name": "Refresh",
+      "description": "Force a refresh of NPR parking data for every configured municipality."
+    }
+  }
+}

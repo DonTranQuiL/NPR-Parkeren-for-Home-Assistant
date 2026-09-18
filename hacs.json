@@ -1,0 +1,7 @@
+{
+  "name": "NPR Parkeren",
+  "content_in_root": false,
+  "country": ["NL"],
+  "homeassistant": "2025.1.0",
+  "render_readme": true
+}

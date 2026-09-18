@@ -1,0 +1,34 @@
+{
+  "retrieved": "2026-09-18",
+  "geometry_row": {
+    "source": "https://opendata.rdw.nl/resource/nsk3-v9n7.json filtered areamanagerid and areaid, limit 1",
+    "areamanagerid": "928",
+    "areaid": "BP_566500",
+    "startdatearea": "2018-12-20T00:00:00.000",
+    "areageometryastext": "POLYGON ((6.06426076 50.866298488, 6.063352984 50.866732963, 6.062944747 50.866928585, 6.063116534 50.866977086, 6.064204934 50.866521637, 6.064874855 50.866909208, 6.066168175 50.866122317, 6.066115115 50.865440485, 6.066977663 50.865358903, 6.066932143 50.865177642, 6.066172948 50.86523986, 6.065591298 50.864712928, 6.065377296 50.864812761, 6.065879736 50.865311924, 6.065842519 50.865998997, 6.064912073 50.866668444, 6.06426076 50.866298488))"
+  },
+  "tijdvak_row": {
+    "source": "https://opendata.rdw.nl/resource/ixf8-gtwq.json filtered areamanagerid with a fare code, limit 1",
+    "areamanagerid": "928",
+    "regulationid": "928_KLOO",
+    "startdatetimeframe": "20160601000000",
+    "daytimeframe": "DINSDAG",
+    "starttimetimeframe": "900",
+    "endtimetimeframe": "1800",
+    "claimrightpossible": "J",
+    "farecalculationcode": "TER01",
+    "maxdurationright": "0",
+    "enddatetimeframe": "29991231235959",
+    "minparkinginterruption": "0",
+    "resetdurationtimeframe": "0"
+  },
+  "rss_item": {
+    "source": "https://zoek.officielebekendmakingen.nl/rss q=(c.product-area==\"officielepublicaties\")and(dt.creator==\"Kerkrade\")",
+    "note": "The specified Gemeenteblad + cql.textAndIndexes query returned an empty channel on this date. This item is from a live limited feed that did return rows. The integration still builds the specified query.",
+    "title": "gmb-2026-439554 : Kerkrade",
+    "link": "https://zoek.officielebekendmakingen.nl/gmb-2026-439554.html",
+    "description": "BOPA vergunning voor Nieuwstraat 92, 6462GN Kerkrade",
+    "pubDate": "Fri, 18 Sep 2026 00:00:00 +0200",
+    "category": "Gemeenteblad"
+  }
+}

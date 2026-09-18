@@ -1,0 +1,2 @@
+# Runtime requirements are declared in custom_components/npr_parkeren/manifest.json
+# (stdlib + Home Assistant only — no extra pip deps).

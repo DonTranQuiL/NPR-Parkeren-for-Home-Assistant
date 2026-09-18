@@ -1,0 +1,3 @@
+refresh:
+  name: Refresh
+  description: Force a refresh of NPR parking data for every configured municipality.

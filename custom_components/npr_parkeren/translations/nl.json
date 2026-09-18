@@ -1,0 +1,104 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NPR Parkeren",
+        "description": "Eén configuratie per Nederlandse gemeente. De gebiedsbeheerder wordt opgezocht in de RDW-opendata.",
+        "data": {
+          "municipality": "Gemeente",
+          "latitude": "Breedtegraad",
+          "longitude": "Lengtegraad",
+          "radius_km": "Straal (km)"
+        },
+        "data_description": {
+          "municipality": "Naam van de gemeente, bijvoorbeeld Kerkrade. Het id van de gebiedsbeheerder wordt tijdens het instellen opgezocht.",
+          "latitude": "Breedtegraad voor 'gereguleerd hier' en het middelpunt van de straal.",
+          "longitude": "Lengtegraad voor 'gereguleerd hier' en het middelpunt van de straal.",
+          "radius_km": "Zones waarvan het zwaartepunt binnen deze straal ligt, of die het punt bevatten, worden getoond."
+        }
+      },
+      "select_manager": {
+        "title": "Kies gebiedsbeheerder",
+        "description": "Meer dan één gebiedsbeheerder komt overeen. Kies de gemeente die u wilt toevoegen.",
+        "data": {
+          "areamanagerid": "Gebiedsbeheerder"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Het RDW-opendataportaal is niet bereikbaar.",
+      "municipality_not_found": "Geen gebiedsbeheerder gevonden voor deze naam.",
+      "unknown": "Onverwachte fout."
+    },
+    "abort": {
+      "already_configured": "Deze gemeente is al toegevoegd.",
+      "municipality_not_found": "Geen gebiedsbeheerder gevonden voor deze naam."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opties NPR Parkeren",
+        "description": "Verversing, straal, kaartmarkeringen en het trefwoord voor het gemeenteblad.",
+        "data": {
+          "scan_interval": "Verversingsinterval (seconden)",
+          "radius_km": "Straal (km)",
+          "max_map_markers": "Maximum kaartmarkeringen",
+          "keyword": "Trefwoord bekendmakingen",
+          "enable_markers": "Kaartmarkeringen inschakelen"
+        },
+        "data_description": {
+          "scan_interval": "Minimaal 300 seconden. NPR-tabellen worden elke 12 uur ververst.",
+          "radius_km": "Zoekstraal rond de ingestelde coördinaten.",
+          "max_map_markers": "Maximum aantal zone-markeringen. Markeringen buiten het maximum worden meteen verwijderd.",
+          "keyword": "Tweede zoekterm voor het gemeenteblad. Standaard is verkeersbesluit.",
+          "enable_markers": "Maak device-tracker-pinnen voor zones binnen de straal."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "overview": {
+        "name": "Overzicht"
+      },
+      "zones_in_radius": {
+        "name": "Zones in straal"
+      },
+      "regulated_here": {
+        "name": "Gereguleerd hier"
+      },
+      "latest_decision": {
+        "name": "Laatste besluit"
+      },
+      "decision_count": {
+        "name": "Aantal besluiten"
+      },
+      "consecutive_errors": {
+        "name": "Opeenvolgende fouten"
+      },
+      "last_update_status": {
+        "name": "Status laatste update"
+      },
+      "last_update_time": {
+        "name": "Tijd laatste update"
+      }
+    },
+    "button": {
+      "refresh": {
+        "name": "Verversen"
+      }
+    },
+    "text": {
+      "watchlist": {
+        "name": "Straatlijst"
+      }
+    }
+  },
+  "services": {
+    "refresh": {
+      "name": "Verversen",
+      "description": "Forceer een verversing van NPR-parkeergegevens voor elke ingestelde gemeente."
+    }
+  }
+}
