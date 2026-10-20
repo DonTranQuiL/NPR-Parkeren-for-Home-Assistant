@@ -1,6 +1,10 @@
 {
   "domain": "npr_parkeren",
   "name": "NPR Parkeren",
+  "categories": [
+    "vehicles_transport",
+    "local_services"
+  ],
   "codeowners": [
     "@DonTranQuiL"
   ],
