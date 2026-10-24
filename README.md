@@ -25,15 +25,22 @@
 
 NPR Parkeren reads the Nationaal Parkeer Register on RDW open data for a single municipality and the official gazette (Gemeenteblad). It shows paid parking, permit zones, blue zones, garages and lots; the tariff and maximum stay that apply at the current weekday and time; whether your coordinates are inside a zone; and recent traffic decisions. Full polygons stay in the coordinator cache. Entities publish a centroid and at most twelve ring points.
 
-## Install (HACS custom repository)
+## Install (HACS)
 
-1. HACS → Integrations → ⋮ → **Custom repositories**
-2. URL: `https://github.com/DonTranQuiL/NPR-Parkeren-for-Home-Assistant`
-3. Category: **Integration**
-4. Download **NPR Parkeren**
-5. **Restart Home Assistant**
-6. Settings → Devices & services → Add Integration → **NPR Parkeren**
-7. Enter the municipality name, the latitude and longitude to test, and a radius. The area manager is looked up during setup. The same municipality cannot be added twice.
+**NPR Parkeren** is submitted to the **HACS default list**, so you can install it straight from the HACS store:
+
+1. Open **HACS** in your sidebar and search for **NPR Parkeren**.
+2. Open it and click **Download**.
+3. **Restart Home Assistant.**
+4. Settings → Devices & services → Add Integration → **NPR Parkeren**
+5. Enter the municipality name, the latitude and longitude to test, and a radius. The area manager is looked up during setup. The same municipality cannot be added twice.
+
+<details>
+<summary>Fallback: add as a custom repository</summary>
+
+If NPR Parkeren does not show up in the HACS search (yet), click the three dots (⋮) in the top right of HACS → **Custom repositories**, paste `https://github.com/DonTranQuiL/NPR-Parkeren-for-Home-Assistant` with category **Integration**, click **Add**, then continue with step 2.
+
+</details>
 
 ## Lovelace card
 
