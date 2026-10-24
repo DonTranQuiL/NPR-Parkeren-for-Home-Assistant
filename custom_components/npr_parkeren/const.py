@@ -5,7 +5,7 @@ from __future__ import annotations
 DOMAIN = "npr_parkeren"
 NAME = "NPR Parkeren"
 MANUFACTURER = "DonTranQuiL"
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 ATTRIBUTION = (
     "Data © RDW Nationaal Parkeer Register (open data) and Officiële bekendmakingen"
 )

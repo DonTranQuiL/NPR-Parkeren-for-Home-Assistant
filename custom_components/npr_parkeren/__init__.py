@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from datetime import timedelta
 from pathlib import Path
 
@@ -15,6 +16,31 @@ except ImportError:  # unit tests that import pure helpers before HA is installe
     CONFIG_SCHEMA = None
 
 
+_LOGGER = logging.getLogger(__name__)
+
+ASSETS_URL = f"/{DOMAIN}_assets"
+CARD_FILE = "npr_parkeren-card.js"
+CARD_VERSION = "0.2.0"
+DATA_FRONTEND_REGISTERED = f"{DOMAIN}_frontend_registered"
+
+
+async def _async_register_frontend(hass) -> None:
+    """Serve the bundled assets and load the card once, for all entries."""
+    if hass.data.get(DATA_FRONTEND_REGISTERED):
+        return
+    hass.data[DATA_FRONTEND_REGISTERED] = True
+    from homeassistant.components.frontend import add_extra_js_url
+    from homeassistant.components.http import StaticPathConfig
+
+    try:
+        await hass.http.async_register_static_paths(
+            [StaticPathConfig(ASSETS_URL, str(Path(__file__).parent / "www"), True)]
+        )
+        add_extra_js_url(hass, f"{ASSETS_URL}/{CARD_FILE}?v={CARD_VERSION}")
+    except Exception as err:  # noqa: BLE001
+        _LOGGER.warning("Could not register the NPR Parkeren card: %s", err)
+
+
 def _platforms():
     from homeassistant.const import Platform
 
@@ -24,26 +50,15 @@ def _platforms():
 async def async_setup(hass, config) -> bool:
     """Set up the NPR Parkeren component (YAML is not used)."""
     hass.data.setdefault(DOMAIN, {})
+    await _async_register_frontend(hass)
     return True
 
 
 async def async_setup_entry(hass, entry) -> bool:
     """Set up NPR Parkeren from a config entry."""
-    from homeassistant.components.http import StaticPathConfig
     from homeassistant.helpers.event import async_track_time_interval
 
     from .coordinator import NprParkerenCoordinator
-
-    local_media = str(Path(__file__).parent / "www")
-    await hass.http.async_register_static_paths(
-        [
-            StaticPathConfig(
-                f"/{DOMAIN}_assets",
-                local_media,
-                cache_headers=True,
-            )
-        ]
-    )
 
     coordinator = NprParkerenCoordinator(hass, entry)
     await coordinator.async_config_entry_first_refresh()

@@ -85,6 +85,12 @@ class NprBaseSensor(CoordinatorEntity[NprParkerenCoordinator], SensorEntity):
 class NprOverviewSensor(NprBaseSensor):
     """Fat attributes for the Lovelace card. State is the zones-in-radius count."""
 
+    # Zone polygons, decisions and history can exceed the recorder's 16 KB
+    # attribute limit; the card reads them from the state, not the database.
+    _unrecorded_attributes = frozenset(
+        {"zones", "unmapped_zones", "decisions", "latest_decision", "history"}
+    )
+
     def __init__(self, coordinator: NprParkerenCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "overview")
         self._attr_name = "Overview"

@@ -2,6 +2,9 @@
  * NPR Parkeren Lovelace card.
  * Custom element: npr_parkeren-card
  * Reads the overview sensor attributes. No extra fetches.
+ *
+ * Bundled with the integration and loaded automatically from
+ * /npr_parkeren_assets/npr_parkeren-card.js.
  */
 class NprParkerenCard extends HTMLElement {
   constructor() {
@@ -52,6 +55,13 @@ class NprParkerenCard extends HTMLElement {
     return 5;
   }
 
+  static getStubConfig(hass) {
+    const entity = Object.keys((hass && hass.states) || {}).find(
+      (id) => id.startsWith("sensor.npr_parkeren") && id.endsWith("_overview")
+    );
+    return { entity: entity || "sensor.npr_parkeren_kerkrade_overview" };
+  }
+
   _isDark(hass) {
     try {
       return !!(hass && hass.themes && hass.themes.darkMode);
@@ -65,7 +75,17 @@ class NprParkerenCard extends HTMLElement {
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  _safeUrl(value) {
+    try {
+      const url = new URL(String(value || ""), window.location.href);
+      return url.protocol === "http:" || url.protocol === "https:" ? url.href : "#";
+    } catch (_err) {
+      return "#";
+    }
   }
 
   _kindColor(kind) {
@@ -182,9 +202,6 @@ class NprParkerenCard extends HTMLElement {
     const place = attrs.areamanager_desc || attrs.municipality || "";
     const counts = attrs.counts || {};
     const regulated = attrs.regulated_here || {};
-    const decisions = this._filter === "decisions" || this._filter === "all"
-      ? attrs.decisions || []
-      : [];
     const zones = this._zones(attrs);
     const filters = [
       ["all", "All"],
@@ -241,7 +258,7 @@ class NprParkerenCard extends HTMLElement {
       .slice(0, 12)
       .map((item) => {
         const klass = item.classification || "traffic_decision";
-        return `<a class="decision" href="${this._esc(item.link || "#")}" target="_blank" rel="noopener">
+        return `<a class="decision" href="${this._esc(this._safeUrl(item.link))}" target="_blank" rel="noopener">
           <span class="pill ${this._esc(klass)}">${this._esc(klass)}</span>
           <strong>${this._esc(item.decision_title || item.title || "Decision")}</strong>
           <span class="muted">${this._esc(item.pub_date || "")}</span>
@@ -371,11 +388,14 @@ class NprParkerenCard extends HTMLElement {
   }
 }
 
-customElements.define("npr_parkeren-card", NprParkerenCard);
-window.customCards = window.customCards || [];
-window.customCards.push({
-  type: "npr_parkeren-card",
-  name: "NPR Parkeren",
-  description: "Regulated parking zones, the tariff in force, and municipal traffic decisions.",
-  preview: true,
-});
+if (!customElements.get("npr_parkeren-card")) {
+  customElements.define("npr_parkeren-card", NprParkerenCard);
+  window.customCards = window.customCards || [];
+  window.customCards.push({
+    type: "npr_parkeren-card",
+    name: "NPR Parkeren",
+    description: "Regulated parking zones, the tariff in force, and municipal traffic decisions.",
+    preview: true,
+    documentationURL: "https://github.com/DonTranQuiL/NPR-Parkeren-for-Home-Assistant",
+  });
+}

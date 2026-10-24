@@ -37,16 +37,7 @@ NPR Parkeren reads the Nationaal Parkeer Register on RDW open data for a single 
 
 ## Lovelace card
 
-Copy the card into your Home Assistant config www folder:
-
-```bash
-cp npr_parkeren-card.js /config/www/npr_parkeren-card.js
-```
-
-Add a Lovelace resource:
-
-- URL: `/local/npr_parkeren-card.js`
-- Type: JavaScript Module
+The card ships with the integration and is available as soon as the integration is installed: there is nothing to copy and no resource to add. It is served from the integration itself and registered once, no matter how many municipalities you add. After installing or updating, restart Home Assistant, do a hard refresh of your browser, and add the card:
 
 ```yaml
 type: custom:npr_parkeren-card
@@ -56,18 +47,11 @@ title: Parking near home
 
 Adjust the entity id to the overview sensor of your config entry.
 
-## Recorder tip
+If you copied `npr_parkeren-card.js` to `/config/www/` and added a `/local/npr_parkeren-card.js` resource with an earlier version, remove that resource under **Settings → Dashboards → Resources** and delete the old file.
 
-The overview sensor carries the zone list, decisions and history. Exclude it from the recorder:
+## Recorder
 
-```yaml
-recorder:
-  exclude:
-    entities:
-      - sensor.npr_parkeren_kerkrade_overview
-```
-
-(Adjust the entity id to match your municipality.)
+The overview sensor's large attributes (zones, decisions, history) are excluded from the recorder automatically, so no `configuration.yaml` changes are needed.
 
 ## Options
 
